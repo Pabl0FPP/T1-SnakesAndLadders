@@ -51,4 +51,12 @@ public class Node {
     public void setLadder(Node ladder) {
         this.ladder = ladder;
     }
+
+    public boolean hasSnake(){
+        return snake != null;
+    }
+
+    public boolean hasLadder(){
+        return ladder != null;
+    }
 }
