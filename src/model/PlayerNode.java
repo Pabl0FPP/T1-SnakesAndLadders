@@ -89,7 +89,7 @@ public class PlayerNode {
         if (current.getPos() == id) {
             return current.getSymbol() + getPlayers(id, current.getNext());
         }
-        return " " + getPlayers(id, current.getNext());
+        return getPlayers(id, current.getNext());
     }
 
 }

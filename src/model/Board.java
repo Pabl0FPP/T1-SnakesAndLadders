@@ -114,18 +114,10 @@ public class Board {
     }
 
     private String convertRowToString(int row, Node current, PlayerNode players) {
-        if (current == null) {
-            return "";
-        }
-
-        String boxString = "[" + current.getId() + players.getPlayers(current.getId()) + "]";
-        String restOfString = convertRowToString(row, current.getNext(), players);
-
-        if (row % 2 == 0) {
-            return restOfString + boxString;
-        } else {
-            return boxString + restOfString;
-        }
+        return (current.getId() % columns == 0) ? "[" + current.getId() + (players.getPlayers(current.getId())) + "]" :
+                (row % 2 == 0) ? convertRowToString(row, current.getNext(), players) + "[" + current.getId() + (players.getPlayers(current.getId())) + "]" :
+                        "[" + current.getId() + (players.getPlayers(current.getId())) + "]" + convertRowToString(row, current.getNext(), players);
     }
+
 
 }
