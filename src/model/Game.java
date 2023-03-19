@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class Game {
 
-    BSTScore bst=new BSTScore();
-    private double score=0;
+    BSTScore bst = new BSTScore();
+    private double score = 0;
 
 
     private PlayerNode playerNode;
@@ -72,11 +72,11 @@ public class Game {
         }
     }
 
-    public void movePlayer(){
+    public void movePlayer(int totalBoxes){
         int diceValue = rollingDice();
         System.out.println("Valor del dado: " + diceValue);
         movePlayer(getCurrentPlayer());
-        if (getCurrentPlayer().getPos() == getBoard().getEnd().getId()) {
+        if (getCurrentPlayer().getPos() >= totalBoxes) {
             System.out.println("El juego terminó");
             System.out.println("Jugador ganador: " + getCurrentPlayer().getNickname() + ". Símbolo: " + getCurrentPlayer().getSymbol());
             //Cambio el puntaje del jugador que gano el juego

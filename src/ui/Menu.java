@@ -7,10 +7,11 @@ import java.util.Scanner;
 public class Menu {
 
     Game game = new Game();
-    BSTScore bst=new BSTScore();
+    BSTScore bst = new BSTScore();
 
     Scanner sc = new Scanner(System.in);
     int option;
+    int totalBoxes;
 
 
 
@@ -18,7 +19,7 @@ public class Menu {
         bst=new BSTScore();
         game = new Game();
 
-        double score=0;
+        double score = 0;
 
         boolean exit = false;
 
@@ -31,7 +32,7 @@ public class Menu {
 
             switch (option){
                 case 1:
-
+                    game = new Game();
                     System.out.println("<<< Datos del tablero >>>");
                     System.out.println("Digite la cantidad de filas: ");
                     int rows=sc.nextInt();
@@ -41,6 +42,7 @@ public class Menu {
                     int snakes=sc.nextInt();
                     System.out.println("Digite la cantidad dde escaleras: ");
                     int ladders= sc.nextInt();
+                    totalBoxes = rows * columns;
                     game.initGame(rows, columns, snakes, ladders);
 
                     sc.nextLine();
@@ -56,48 +58,10 @@ public class Menu {
                     System.out.println("Asi quedo el tablero: ");
                     game.printPlayersOfBoard();
 
-                    /*
-                    //Turnos
-                    long startTime = System.currentTimeMillis();
-
-                    game.setGameOver(false);
-
-
-                    while (!game.gameOver()) {
-                        Player currentPlayer = game.getCurrentPlayer();
-                        System.out.println("\nTurno de " + currentPlayer.getNickname() + ". Símbolo: " + currentPlayer.getSymbol());
-
-                        // Tirar el dado
-                        int diceValue = game.rollingDice();
-                        System.out.println("Valor del dado: " + diceValue);
-
-
-                        // Mover jugador
-                        game.movePlayer();
-
-                        // Verificar si el jugador ganó
-                        if (currentPlayer.getPos() == game.getBoard().getEnd().getId()) {
-                            long endTime = (System.currentTimeMillis() - startTime)/1000;
-                            score=(600-endTime)/6;
-                            System.out.println("El juego terminó");
-                            System.out.println("Jugador ganador: " + currentPlayer.getNickname() + ". Símbolo: " + currentPlayer.getSymbol());
-                            //Cambio el puntaje del jugador que gano el juego
-                            currentPlayer.setScore(score);
-                            //Lo registro en el arbol
-                            bst.add(currentPlayer);
-                            bst.inOrder();
-
-                            game.setGameOver(true);
-                        } else {
-                            game.nextPlayer();
-                        }
-                    }
-                    */
-
                     long startTime = System.currentTimeMillis();
                     menu1();
                     long endTime = (System.currentTimeMillis() - startTime)/1000;
-                    score=(600-endTime)/6;
+                    score = (600-endTime)/6;
 
 
 
@@ -133,7 +97,7 @@ public class Menu {
 
 
     public void menu1(){
-        int score=0;
+        int score = 0;
         Player currentPlayer = game.getCurrentPlayer();
         //game = new Game();
 
@@ -150,37 +114,24 @@ public class Menu {
                 case 1:
 
                     // Mover jugador
-                    game.movePlayer();
+                    game.movePlayer(totalBoxes);
 
                     break;
                 case 2:
                     //ver serpientes y escaleras
+                    /*
+                    game.getBoard().printBoard();
 
+                     */
 
                     break;
                 default:
                     System.out.println("Digite una opción disponible");
                     break;
             }
-/*
-            if (currentPlayer.getPos() == game.getBoard().getEnd().getId()) {
-                System.out.println("El juego terminó");
-                System.out.println("Jugador ganador: " + currentPlayer.getNickname() + ". Símbolo: " + currentPlayer.getSymbol());
-                //Cambio el puntaje del jugador que gano el juego
-                currentPlayer.setScore(score);
-                //Lo registro en el arbol
-                bst.add(currentPlayer);
-
-                game.setGameOver(true);
-            } else {
-                game.nextPlayer();
-            }
-            */
 
         }
 
     }
-
-
 
 }
