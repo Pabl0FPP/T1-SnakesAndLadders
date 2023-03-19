@@ -1,6 +1,6 @@
 package ui;
 
-import model.Game;
+import model.*;
 
 import java.util.Scanner;
 
@@ -38,7 +38,7 @@ public class Menu {
 
                     sc.nextLine();
                     System.out.println("<<< Datos de los jugadores >>>");
-                    for(int i=1;i<4;i++){
+                    for(int i=1;i<=3;i++){
                         System.out.println("Digite el nickname del jugador "+ i);
 
                         String nickname=sc.nextLine();
@@ -50,6 +50,27 @@ public class Menu {
                     game.printPlayersOfBoard();
 
                     //Turnos
+                    while (!game.gameOver()) {
+                        Player currentPlayer = game.getCurrentPlayer();
+                        System.out.println("\nTurno de " + currentPlayer.getNickname() + ". Símbolo: " + currentPlayer.getSymbol());
+
+                        // Tirar el dado
+                        int diceValue = game.rollingDice();
+                        System.out.println("Valor del dado: " + diceValue);
+
+                        // Mover jugador
+                        game.movePlayer();
+
+                        // Verificar si el jugador ganó
+                        if (currentPlayer.getPos() == game.getBoard().getEnd().getId()) {
+                            System.out.println("Jugador ganador: " + currentPlayer.getNickname() + ". Símbolo: " + currentPlayer.getSymbol());
+                            game.setGameOver(true);
+                        } else {
+                            game.nextPlayer();
+                        }
+                    }
+
+                    // Puntajes
 
                     long endTime = (System.currentTimeMillis() - startTime)/1000;
                     double score=(600-endTime)/6;

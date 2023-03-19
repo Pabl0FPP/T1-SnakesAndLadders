@@ -55,4 +55,5 @@ public class Player {
     public void setPrevious(Player previous) {
         this.previous = previous;
     }
+
 }
