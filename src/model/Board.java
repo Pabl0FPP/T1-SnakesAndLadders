@@ -45,11 +45,19 @@ public class Board {
         int totalSnaksLads = snakes + ladders;
 
         if (totalSnaksLads > maxSnakLad) {
-            System.out.println("El número de escaleras y serpientes es muy grande. ");
+            System.out.println("La cantidad de escaleras y serpientes es muy grande. ");
             snakes = maxSnakLad / 2;
             ladders = maxSnakLad - snakes;
             System.out.println("Escaleras: " + ladders);
             System.out.println("Serpientes: " + snakes);
+        }
+        // Validación adicional para evitar escaleras en la casilla 1
+        int startLadders = 0;
+        if (ladders > 0) {
+            startLadders = generateRandomInt(2, length);
+            if (startLadders == length) {
+                startLadders--;
+            }
         }
 
         initAllSnakesAndLadders(snakes, ladders, getNodeAtPosition(generateRandomInt(1, length), end), getNodeAtPosition(generateRandomInt(1, length), start));
@@ -62,7 +70,9 @@ public class Board {
 
         if (snakes > 0) {
             Node moveTo = getNodeAtPosition(generateRandomInt(1, currentSnake.getId()), currentSnake);
-            if (moveTo != end && moveTo != start && !moveTo.hasSnake() && !moveTo.hasLadder()) {
+            if (moveTo == end) { // Si la casilla es la última, generar de nuevo
+                initAllSnakesAndLadders(snakes, ladders, currentSnake, currentLadder);
+            } else if (!moveTo.hasSnake() && !moveTo.hasLadder()) {
                 currentSnake.setSnake(moveTo);
                 initAllSnakesAndLadders(snakes - 1, ladders, getNodeAtPosition(generateRandomInt(1, length), end), currentLadder);
             } else {
@@ -70,12 +80,45 @@ public class Board {
             }
         } else {
             Node moveTo = getNodeAtPosition(generateRandomInt(1, length - currentLadder.getId()), currentLadder);
-            if (moveTo != end && moveTo != start && !moveTo.hasSnake() && !moveTo.hasLadder()) {
+            if (moveTo == end || moveTo.hasLadder()) { // Validación adicional para evitar escaleras en la última casilla
+                initAllSnakesAndLadders(snakes, ladders, currentSnake, currentLadder);
+            } else if (!moveTo.hasSnake() && !moveTo.hasLadder()) {
                 currentLadder.setLadder(moveTo);
-                initAllSnakesAndLadders(snakes, ladders - 1, currentSnake, getNodeAtPosition(generateRandomInt(1, length), start));
+                if (moveTo == end) { // Si la casilla a la que se está moviendo con la escalera es la última, generar de nuevo
+                    initAllSnakesAndLadders(snakes, ladders - 1, currentSnake, getNodeAtPosition(generateRandomInt(1, length - 1), start));
+                } else {
+                    initAllSnakesAndLadders(snakes, ladders - 1, currentSnake, getNodeAtPosition(generateRandomInt(1, length), start));
+                }
             } else {
                 initAllSnakesAndLadders(snakes, ladders, currentSnake, moveTo);
             }
+        }
+    }
+
+    public void printSnakesAndLadders() {
+        Node currentNode = end;
+        char letter = 'A'; // comenzamos con la letra A
+        int ladderCount = 0; // contador de escaleras
+        for (int i = rows; i >= 1; i--) {
+            for (int j = 1; j <= columns; j++) {
+                System.out.print("[");
+                if (currentNode.hasSnake()) {
+                    System.out.print(" " + letter + " ");
+                    letter++; // avanzamos a la siguiente letra
+                } else if (currentNode.hasLadder()) {
+                    ladderCount++; // aumentamos el contador de escaleras
+                    System.out.print(" " + ladderCount + " ");
+                } else {
+                    System.out.print("   ");
+                }
+                System.out.print("]");
+                if (currentNode.getPrevious() != null) {
+                    currentNode = currentNode.getPrevious();
+                } else {
+                    currentNode = currentNode.getNext();
+                }
+            }
+            System.out.print("\n");
         }
     }
 

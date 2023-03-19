@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.*;
 import model.*;
 
 import java.util.Scanner;
@@ -40,10 +41,18 @@ public class Menu {
                     int columns=sc.nextInt();
                     System.out.println("Digite la cantidad de serpientes:");
                     int snakes=sc.nextInt();
-                    System.out.println("Digite la cantidad dde escaleras: ");
+                    System.out.println("Digite la cantidad de escaleras: ");
                     int ladders= sc.nextInt();
                     totalBoxes = rows * columns;
-                    game.initGame(rows, columns, snakes, ladders);
+                    try {
+                        game.initGame(rows, columns, snakes, ladders);
+                    } catch (InvalidBoardConfigurationException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    } catch (InvalidBoardSizeException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
 
                     sc.nextLine();
                     System.out.println("<<< Datos de los jugadores >>>");
@@ -51,9 +60,18 @@ public class Menu {
                         System.out.println("Digite el nickname del jugador "+ i);
 
                         String nickname=sc.nextLine();
-                        System.out.println("¿Cuál de los siguientes símbolos desea "+nickname+", para ser reconocido en el tablero? *, !, O, X, %, $, #, +, & ");
-                        String symbol=sc.nextLine();
-                        game.addPlayer(symbol, nickname);
+                        String symbol;
+                        boolean isValidSymbol = false;
+                        do {
+                            System.out.println("¿Cuál de los siguientes símbolos desea "+nickname+", para ser reconocido en el tablero? *, !, O, X, %, $, #, +, & ");
+                            symbol=sc.nextLine();
+                            try {
+                                game.addPlayer(symbol, nickname);
+                                isValidSymbol = true;
+                            } catch (InvalidSymbolException e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } while (!isValidSymbol);
                     }
                     System.out.println("Asi quedo el tablero: ");
                     game.printPlayersOfBoard();
@@ -113,16 +131,14 @@ public class Menu {
             switch (option1){
                 case 1:
 
-                    // Mover jugador
+                    // Mover jugador y mostrarlo en el tablero
                     game.movePlayer(totalBoxes);
+                    game.printPlayersOfBoard();
 
                     break;
                 case 2:
                     //ver serpientes y escaleras
-                    /*
-                    game.getBoard().printBoard();
-
-                     */
+                    game.getBoard().printSnakesAndLadders();
 
                     break;
                 default:

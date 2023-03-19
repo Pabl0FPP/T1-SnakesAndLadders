@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.*;
+
 import java.util.Random;
 
 public class Game {
@@ -23,7 +25,15 @@ public class Game {
         theSymbols = "*!OX%$#+&";
     }
 
-    public void initGame(int rows, int columns, int snakes, int ladders) {
+    public void initGame(int rows, int columns, int snakes, int ladders) throws InvalidBoardConfigurationException, InvalidBoardSizeException  {
+        if (rows <= 0 || columns <= 0) {
+            throw new InvalidBoardSizeException();
+        }
+        int totalBoxes = rows * columns;
+        int totalSnakesAndLadders = snakes + ladders;
+        if(totalSnakesAndLadders > totalBoxes){
+            throw new InvalidBoardConfigurationException();
+        }
         board = new Board(rows, columns);
         board.generateSnakesAndLadders(snakes, ladders);
     }
@@ -36,14 +46,14 @@ public class Game {
         return theSymbols;
     }
 
-    public boolean addPlayer(String symbol, String nickname) {
-        if (theSymbols.contains(symbol + "")) {
+    public boolean addPlayer(String symbol, String nickname) throws InvalidSymbolException {
+        if (theSymbols.contains(symbol)) {
             playerNode.addPlayer(symbol, nickname);
             theSymbols = theSymbols.replace(symbol + "", "");
             return true;
+        } else {
+            throw new InvalidSymbolException();
         }
-        System.out.println("El símbolo seleccionado no se encuentra disponible.");
-        return false;
     }
 
     public void printPlayersOfBoard() {
