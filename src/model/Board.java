@@ -4,7 +4,7 @@ public class Board {
 
     private int rows;
     private int columns;
-    private int length;
+    public int length;
 
     private Node start;
     private Node end;
@@ -79,7 +79,8 @@ public class Board {
         }
     }
 
-    public static int generateRandomInt(int start, int end) {
+    //quité el static
+    public int generateRandomInt(int start, int end) {
         if (end > start) {
             return (int) ((Math.random() * (1 + end - start)) + start);
         }

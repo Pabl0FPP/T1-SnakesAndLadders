@@ -3,10 +3,10 @@ package model;
 public class BSTScore {
 
 
-    private PlayerNode root;
+    private Player root;
 
 
-    public void add(PlayerNode node) {
+    public void add(Player node) {
         if (root == null) {
             root = node;
         } else {
@@ -14,7 +14,7 @@ public class BSTScore {
         }
     }
 
-    private void add(PlayerNode current, PlayerNode node) {
+    private void add(Player current, Player node) {
         if (node.getScore()-current.getScore() < 0) {
             //Meter a la izquierda
             if (current.getLeft() == null) {
@@ -39,13 +39,13 @@ public class BSTScore {
         inOrder(root);
     }
 
-    private void inOrder(PlayerNode current){
+    private void inOrder(Player current){
         if(current == null){
             return;
         }
-        inOrder(current.getLeft());
-        System.out.println(current.getScore()+" ---- "+current.getWinner());
         inOrder(current.getRight());
+        System.out.println(current.getScore()+" ---- "+current.getNickname());
+        inOrder(current.getLeft());
     }
 
 }

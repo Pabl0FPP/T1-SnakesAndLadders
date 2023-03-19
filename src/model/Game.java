@@ -3,6 +3,11 @@ package model;
 import java.util.Random;
 
 public class Game {
+
+    BSTScore bst=new BSTScore();
+    private double score=0;
+
+
     private PlayerNode playerNode;
     private Dice dice;
 
@@ -58,7 +63,7 @@ public class Game {
 
 
     // Simulación movimiento del jugador
-    public void movePlayer() {
+    public void movePlayer1() {
         rollingDice(); // llamamos al método para actualizar el valor de diceValue
         movePlayer(getCurrentPlayer());
         if (getCurrentPlayer().getPos() >= 18) { // verificamos si algún jugador ha llegado a la casilla 18 o superior
@@ -66,6 +71,26 @@ public class Game {
             gameOver = true; // establecemos el valor de gameOver en true
         }
     }
+
+    public void movePlayer(){
+        int diceValue = rollingDice();
+        System.out.println("Valor del dado: " + diceValue);
+        movePlayer(getCurrentPlayer());
+        if (getCurrentPlayer().getPos() == getBoard().getEnd().getId()) {
+            System.out.println("El juego terminó");
+            System.out.println("Jugador ganador: " + getCurrentPlayer().getNickname() + ". Símbolo: " + getCurrentPlayer().getSymbol());
+            //Cambio el puntaje del jugador que gano el juego
+            getCurrentPlayer().setScore(score);
+            //Lo registro en el arbol
+            bst.add(getCurrentPlayer());
+
+            setGameOver(true);
+        } else {
+            nextPlayer();
+        }
+    }
+
+
 
     private void movePlayer(Player current) {
         System.out.println("Posición anterior: " + current.getPos());
