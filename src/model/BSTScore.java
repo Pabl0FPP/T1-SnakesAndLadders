@@ -43,9 +43,10 @@ public class BSTScore {
         if(current == null){
             return;
         }
-        inOrder(current.getRight());
-        System.out.println(current.getScore()+" ---- "+current.getNickname());
         inOrder(current.getLeft());
+        System.out.println(current.getScore()+" ---- "+current.getNickname());
+        inOrder(current.getRight());
     }
+
 
 }
