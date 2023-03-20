@@ -12,7 +12,7 @@ public class Menu {
 
     Scanner sc = new Scanner(System.in);
     int option;
-    int totalBoxes;
+    //int totalBoxes;
 
 
 
@@ -20,7 +20,6 @@ public class Menu {
         bst=new BSTScore();
         game = new Game();
 
-        double score = 0;
 
         boolean exit = false;
 
@@ -43,7 +42,7 @@ public class Menu {
                     int snakes=sc.nextInt();
                     System.out.println("Digite la cantidad de escaleras: ");
                     int ladders= sc.nextInt();
-                    totalBoxes = rows * columns;
+                    //totalBoxes = rows * columns;
                     try {
                         game.initGame(rows, columns, snakes, ladders);
                     } catch (InvalidBoardConfigurationException e) {
@@ -76,18 +75,13 @@ public class Menu {
                     System.out.println("Asi quedo el tablero: ");
                     game.printPlayersOfBoard();
 
-                    long startTime = System.currentTimeMillis();
                     menu1();
-                    long endTime = (System.currentTimeMillis() - startTime)/1000;
-                    score = (600-endTime)/6;
-
-
 
                     break;
                 case 2:
                     exit = true;
                     System.out.println("Juego finalizado:)");
-                    bst.inOrder();
+                    game.showTopPlayers();
 
                     break;
                 default:
@@ -115,11 +109,9 @@ public class Menu {
 
 
     public void menu1(){
-        int score = 0;
-        Player currentPlayer = game.getCurrentPlayer();
-        //game = new Game();
+        double startTime = System.currentTimeMillis();
 
-        //bst=new BSTScore();
+        Player currentPlayer = game.getCurrentPlayer();
 
         game.setGameOver(false);
 
@@ -132,7 +124,7 @@ public class Menu {
                 case 1:
 
                     // Mover jugador y mostrarlo en el tablero
-                    game.movePlayer(totalBoxes);
+                    game.movePlayer();
                     game.printPlayersOfBoard();
 
                     break;

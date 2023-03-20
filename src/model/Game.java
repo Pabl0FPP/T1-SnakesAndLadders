@@ -5,9 +5,10 @@ import exceptions.*;
 import java.util.Random;
 
 public class Game {
+    double startTime = System.currentTimeMillis();
 
     BSTScore bst = new BSTScore();
-    private double score = 0;
+    //private double score = 0;
 
 
     private PlayerNode playerNode;
@@ -71,35 +72,38 @@ public class Game {
         return diceValue;
     }
 
+    public void showTopPlayers(){
 
-    // Simulación movimiento del jugador
-    public void movePlayer1() {
-        rollingDice(); // llamamos al método para actualizar el valor de diceValue
-        movePlayer(getCurrentPlayer());
-        if (getCurrentPlayer().getPos() >= 18) { // verificamos si algún jugador ha llegado a la casilla 18 o superior
-            System.out.println("El jugador " + getCurrentPlayer().getSymbol() + " ha ganado el juego.");
-            gameOver = true; // establecemos el valor de gameOver en true
-        }
+        bst.inOrder();
     }
 
-    public void movePlayer(int totalBoxes){
+
+    // Simulación movimiento del jugador
+
+    public void movePlayer(){
+
+        int totalBoxes=board.getColumns()*board.getRows();
         int diceValue = rollingDice();
         System.out.println("Valor del dado: " + diceValue);
         movePlayer(getCurrentPlayer());
+
         if (getCurrentPlayer().getPos() >= totalBoxes) {
-            System.out.println("El juego terminó");
-            System.out.println("Jugador ganador: " + getCurrentPlayer().getNickname() + ". Símbolo: " + getCurrentPlayer().getSymbol());
+            setGameOver(true);
+            double endTime = (System.currentTimeMillis() - startTime)/1000;
+            double score = (600-endTime)/6;
             //Cambio el puntaje del jugador que gano el juego
             getCurrentPlayer().setScore(score);
+            System.out.println("El juego terminó");
+            System.out.println("Jugador ganador: " + getCurrentPlayer().getNickname() + ". Símbolo: " + getCurrentPlayer().getSymbol() + " con un puntaje de: "+ getCurrentPlayer().getScore());
+
             //Lo registro en el arbol
             bst.add(getCurrentPlayer());
 
-            setGameOver(true);
+
         } else {
             nextPlayer();
         }
     }
-
 
 
     private void movePlayer(Player current) {
