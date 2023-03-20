@@ -17,7 +17,8 @@ public class Menu {
 
 
     public Menu(){
-        bst=new BSTScore();
+        BSTScore bst = new BSTScore();
+
         game = new Game();
 
 

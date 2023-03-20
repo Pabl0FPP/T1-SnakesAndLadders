@@ -81,11 +81,10 @@ public class Game {
     // Simulación movimiento del jugador
 
     public void movePlayer(){
-
         int totalBoxes=board.getColumns()*board.getRows();
         int diceValue = rollingDice();
         System.out.println("Valor del dado: " + diceValue);
-        movePlayer(getCurrentPlayer());
+        movePlayer(getCurrentPlayer(), diceValue); // Corregido aquí
 
         if (getCurrentPlayer().getPos() >= totalBoxes) {
             setGameOver(true);
@@ -98,15 +97,13 @@ public class Game {
 
             //Lo registro en el arbol
             bst.add(getCurrentPlayer());
-
-
         } else {
             nextPlayer();
         }
+
     }
 
-
-    private void movePlayer(Player current) {
+    private void movePlayer(Player current, int diceValue) { // Corregido aquí
         System.out.println("Posición anterior: " + current.getPos());
         int newPosition = current.getPos() + diceValue;
         Node node = board.getNodeByIndex(newPosition);
@@ -124,6 +121,7 @@ public class Game {
         }
         System.out.println("Nueva posición: " + current.getPos());
     }
+
 
     public Player nextPlayer() {
         return playerNode.getNextPlayer();
