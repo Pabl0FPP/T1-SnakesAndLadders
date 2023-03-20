@@ -80,7 +80,8 @@ public class Menu {
                     break;
                 case 2:
                     exit = true;
-                    System.out.println("Juego finalizado:)");
+                    System.out.println("Juego finalizado:) <3");
+                    System.out.println("Tabla de puntuaciones Final:\n");
                     game.showTopPlayers();
 
                     break;
@@ -109,13 +110,12 @@ public class Menu {
 
 
     public void menu1(){
-        double startTime = System.currentTimeMillis();
-
-        Player currentPlayer = game.getCurrentPlayer();
 
         game.setGameOver(false);
 
         while(!game.gameOver()){
+            Player currentPlayer = game.getCurrentPlayer();
+            System.out.println("Jugador " + currentPlayer.getSymbol() + ", es tu turno");
             System.out.println("1. Tirar dado\n" +
                     "2. Ver escaleras y serpientes\n");
             int option1=sc.nextInt();

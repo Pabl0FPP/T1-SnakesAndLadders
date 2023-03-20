@@ -7,8 +7,16 @@ import java.util.Random;
 public class Game {
     double startTime = System.currentTimeMillis();
 
-    BSTScore bst = new BSTScore();
-    //private double score = 0;
+    private static BSTScore bst = null;
+
+    public static synchronized BSTScore getInstance() {
+        if (bst == null) {
+            bst = new BSTScore();
+        }
+        return bst;
+    }
+
+
 
 
     private PlayerNode playerNode;
@@ -81,6 +89,7 @@ public class Game {
     // Simulación movimiento del jugador
 
     public void movePlayer(){
+        BSTScore bst = getInstance();
 
         int totalBoxes=board.getColumns()*board.getRows();
         int diceValue = rollingDice();
@@ -98,6 +107,8 @@ public class Game {
 
             //Lo registro en el arbol
             bst.add(getCurrentPlayer());
+            System.out.println("Asi va la tabla de puntaje: ");
+            bst.inOrder();
 
 
         } else {

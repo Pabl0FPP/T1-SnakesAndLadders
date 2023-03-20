@@ -96,29 +96,47 @@ public class Board {
     }
 
     public void printSnakesAndLadders() {
-        Node currentNode = end;
-        char letter = 'A'; // comenzamos con la letra A
-        int ladderCount = 0; // contador de escaleras
-        for (int i = rows; i >= 1; i--) {
-            for (int j = 1; j <= columns; j++) {
-                System.out.print("[");
-                if (currentNode.hasSnake()) {
-                    System.out.print(" " + letter + " ");
-                    letter++; // avanzamos a la siguiente letra
-                } else if (currentNode.hasLadder()) {
-                    ladderCount++; // aumentamos el contador de escaleras
-                    System.out.print(" " + ladderCount + " ");
-                } else {
-                    System.out.print("   ");
-                }
-                System.out.print("]");
-                if (currentNode.getPrevious() != null) {
-                    currentNode = currentNode.getPrevious();
-                } else {
-                    currentNode = currentNode.getNext();
-                }
+        printSnakesAndLadders(end, rows, 1, 'A', 0, 0, 0);
+    }
+
+    private void printSnakesAndLadders(Node currentNode, int currentRow, int currentCol, char currentLetter, int currentLadderCount, int currentSnakeCount, int currentPrintedCount) {
+        if (currentRow == 0) {
+            return;
+        }
+
+        System.out.print("[");
+        char nextLetter = currentLetter;
+        int nextLadderCount = currentLadderCount;
+        int nextSnakeCount = currentSnakeCount;
+
+        if (currentNode.hasSnake()) {
+            if (currentSnakeCount <= currentPrintedCount) {
+                System.out.print(" " + currentLetter + " ");
+                nextLetter++;
+                nextSnakeCount++;
+            } else {
+                System.out.print("   ");
             }
+        } else if (currentNode.hasLadder()) {
+            if (currentLadderCount <= currentPrintedCount) {
+                nextLadderCount++;
+                System.out.print(" " + (currentLadderCount + 1) + " ");
+            } else {
+                System.out.print("   ");
+            }
+        } else {
+            System.out.print("   ");
+        }
+        System.out.print("]");
+
+        if (currentCol < columns) {
+            printSnakesAndLadders(currentNode.getPrevious(), currentRow, currentCol + 1, nextLetter, nextLadderCount, nextSnakeCount, currentPrintedCount);
+        } else {
             System.out.print("\n");
+            if (currentPrintedCount >= rows * columns - (currentSnakeCount + currentLadderCount)) {
+                return;
+            }
+            printSnakesAndLadders(currentNode.getPrevious(), currentRow - 1, 1, nextLetter, nextLadderCount, nextSnakeCount, currentPrintedCount + currentSnakeCount + currentLadderCount);
         }
     }
 
